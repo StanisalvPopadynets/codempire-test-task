@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 const Opeation = (props) => {
 
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity onPress={props.onPress} style={styles.button}>
       <Text style={styles.title}>{props.value}</Text>
     </TouchableOpacity>
   );

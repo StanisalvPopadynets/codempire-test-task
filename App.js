@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 import Digit from './src/Digit';
 import Operation from './src/Operation';
@@ -11,20 +11,32 @@ const digits = [',', ...Array(10).keys()];
 
  const App = () => {
 
+  const [isCurrentFirst, setIscurrentFirst] = useState(true);
   const [firstVal, setFirstVal] = useState('');
   const [secondVal, setSecondtVal] = useState('');
   const [operation, setOperation] = useState('');
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(0);
 
   const onDigitClick = digit => {
-    debugger
+    // debugger
     if ((!firstVal || (firstVal && !operation && !secondVal))) {
-      setFirstVal(Number(firstVal + String(digit)));
-      setResult(Number(firstVal + String(digit)));
+      const valueToBeSet = Number(firstVal + String(digit))
+      setFirstVal(valueToBeSet);
+      setResult(valueToBeSet);
+      setIscurrentFirst(true);
     } else {
-      setSecondtVal(Number(secondVal + String(digit)));
-      setResult(Number(secondVal + String(digit)));
+      const valueToBeSet = Number(secondVal + String(digit));
+      setSecondtVal(valueToBeSet);
+      setResult(valueToBeSet);
+      setIscurrentFirst(false);
     }
+  }
+  const fullReset = () => {
+    setFirstVal('');
+    setSecondtVal('');
+    setOperation('');
+    setResult(0);
+    setIscurrentFirst(true);
   }
 
   const onOperation = () => {
@@ -38,17 +50,16 @@ const digits = [',', ...Array(10).keys()];
         break;
       case '-' : res = firstVal - secondVal;
         break;
-      default : console.log(res);
+      default : res = firstVal;
       }
       console.log('RESULT', res)
       setFirstVal(res);
       setResult(res);
       setSecondtVal('');
       setOperation('');
+      setIscurrentFirst(true);
     } 
-  // console.log(firstVal)
-  // console.log(secondVal)
-  // console.log("APPPPPPPPPPPPPPPPp")
+    // debugger
   return (
     <View style={styles.container}>
       <TextInput textAlign='center' style={{textAlign: 'right'}} value={result ?? '0'}/>
@@ -58,9 +69,16 @@ const digits = [',', ...Array(10).keys()];
           {/* <Digit value=',' style={{flexOrder: 1}} /> */}
           {digits.map(el => <Digit onPress={() => onDigitClick(el)} key={el} value={el}/> )}
           <View style={{flexDirection: 'row', width: 120, flexWrap: 'wrap'}}>
-            <Operation value='AC' />
-            <Operation value='+/-' />
-            <Operation value='%' />
+            <Operation onPress={fullReset} value='AC' />
+            <Operation onPress={() =>  {
+                setResult(-result);
+                isCurrentFirst ? setFirstVal(-result) : setSecondtVal(-result);
+              }} value='+/-' 
+            />
+            <Operation onPress={() => {
+                setResult(result / 100);
+                isCurrentFirst ? setFirstVal(result / 100) : setSecondtVal(result / 100);                
+              }} value='%' />
             <Operation value='mc' />
             <Operation value='mr' />
             <Operation value='m-' />
