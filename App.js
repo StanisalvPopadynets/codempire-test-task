@@ -37,9 +37,10 @@ const App = () => {
 
   const [isCurrentFirst, setIscurrentFirst] = useState(true);
   const [firstVal, setFirstVal] = useState('');
-  const [secondVal, setSecondtVal] = useState('');
+  const [secondVal, setSecondVal] = useState('');
   const [operation, setOperation] = useState('');
   const [result, setResult] = useState(0);
+  const [memoryValue, setMemoryValue] = useState(null);
 
   const checkAction = (symbol, isOrange) => {
     if (typeof symbol === 'number') return onDigitClick;
@@ -48,26 +49,27 @@ const App = () => {
     if (symbol === '%') return divideByHundred;
     if (isOrange && !symbol.includes('m')) return onOrangeClick;
     if (symbol === ',') return addDecimal;
+    if (symbol.includes('m')) return memoryOperation;
   }
 
   const toggleSign = () => {
     setResult(-result);
-    isCurrentFirst ? setFirstVal(-result) : setSecondtVal(-result);
+    isCurrentFirst ? setFirstVal(-result) : setSecondVal(-result);
   };
 
   const divideByHundred = () => {
     setResult(result / 100);
-    isCurrentFirst ? setFirstVal(result / 100) : setSecondtVal(result / 100);
+    isCurrentFirst ? setFirstVal(result / 100) : setSecondVal(result / 100);
   };
 
   const addDecimal = () => {
     setResult(result + '.');
-    isCurrentFirst ? setFirstVal(result + '.') : setSecondtVal(result + '.');
+    isCurrentFirst ? setFirstVal(result + '.') : setSecondVal(result + '.');
   }
 
   const fullReset = () => {
     setFirstVal('');
-    setSecondtVal('');
+    setSecondVal('');
     setOperation('');
     setResult(0);
     setIscurrentFirst(true);
@@ -82,16 +84,19 @@ const App = () => {
       setIscurrentFirst(true);
     } else {
       const valueToBeSet = Number(secondVal + String(digit));
-      setSecondtVal(valueToBeSet);
+      setSecondVal(valueToBeSet);
       setResult(valueToBeSet);
       setIscurrentFirst(false);
     }
   }
 
   const onOrangeClick = (symbol) => {
-    symbol === '='
-      ? onBasicOperation()
-      : setOperation(symbol)
+    if (symbol === '=') {
+      onBasicOperation();
+    } else {
+      setOperation(symbol);
+      setIscurrentFirst(false);
+    }
   }
 
   const onBasicOperation = () => {
@@ -110,14 +115,38 @@ const App = () => {
     console.log('RESULT', res)
     setFirstVal(res);
     setResult(res);
-    setSecondtVal('');
+    setSecondVal('');
     setOperation('');
     setIscurrentFirst(true);
   } 
+  const memoryOperation = symbol => {
+    debugger
+    switch (symbol) {
+      case 'mc': 
+        setMemoryValue(null);
+        break;
+      case 'mr':
+        if (isCurrentFirst) {
+          setFirstVal(memoryValue);
+          setResult(memoryValue);
+        } else {
+          setSecondVal(memoryValue);
+        }
+        break;
+      case 'm+':
+        // setResult(result + memoryValue);
+        setMemoryValue(result + memoryValue);
+        break;
+      case 'm-':
+        // setResult(result - memoryValue);
+        setMemoryValue(result - memoryValue);
+        break;
+    }
+  }
     // debugger
   return (
     <View style={styles.container}>
-      <TextInput textAlign='center' style={{textAlign: 'right', fontSize: 72, color: '#fff', paddingVertical: 40, paddingHorizontal: '6%'}} value={result ?? '0'}/>
+      <TextInput textAlign='center' style={{textAlign: 'right', fontSize: 72, color: '#fff', paddingTop: '10%', paddingHorizontal: '6%'}} value={result ?? '0'}/>
       <View style={{flexDirection: 'row'}}>
         
         <View style={styles.digitContainer}>
@@ -128,12 +157,12 @@ const App = () => {
             <Operation onPress={fullReset} value='AC' />
             <Operation onPress={() =>  {
                 setResult(-result);
-                isCurrentFirst ? setFirstVal(-result) : setSecondtVal(-result);
+                isCurrentFirst ? setFirstVal(-result) : setSecondVal(-result);
               }} value='+/-' 
             />
             <Operation onPress={() => {
                 setResult(result / 100);
-                isCurrentFirst ? setFirstVal(result / 100) : setSecondtVal(result / 100);                
+                isCurrentFirst ? setFirstVal(result / 100) : setSecondVal(result / 100);                
               }} value='%' />
             <Operation value='mc' />
             <Operation value='mr' />

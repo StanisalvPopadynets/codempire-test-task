@@ -10,7 +10,7 @@ const TestBtn = (props) => {
     props.isGray ? styles.gray : void(0) 
   ];
   return (
-    <TouchableHighlight onPress={props.onPress} style={composedButton}>
+    <TouchableHighlight underlayColor="#a5a5a5" onPress={props.onPress} style={composedButton}>
       <Text style={styles.title}>{props.value}</Text>
     </TouchableHighlight>
   );
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontSize: 24
+    fontSize: 36,
   }
 });
 
