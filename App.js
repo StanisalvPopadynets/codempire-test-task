@@ -24,7 +24,7 @@ const App = () => {
     if (isOrange && !symbol.includes('m')) return onOrangeClick;
     if (symbol === ',') return addDecimal;
     if (symbol.includes('m')) return memoryOperation;
-  }
+  };
 
   const toggleSign = () => {
     setResult(-result);
@@ -39,7 +39,7 @@ const App = () => {
   const addDecimal = () => {
     setResult(result + '.');
     isCurrentFirst ? setFirstVal(result + '.') : setSecondVal(result + '.');
-  }
+  };
 
   const fullReset = () => {
     setFirstVal('');
@@ -47,7 +47,7 @@ const App = () => {
     setOperation('');
     setResult(0);
     setIscurrentFirst(true);
-  }
+  };
 
   const onDigitClick = digit => {
     if ((!firstVal || (firstVal && !operation && !secondVal))) {
@@ -61,7 +61,7 @@ const App = () => {
       setResult(valueToBeSet);
       setIscurrentFirst(false);
     }
-  }
+  };
 
   const onOrangeClick = (symbol) => {
     if (symbol === '=') {
@@ -70,7 +70,7 @@ const App = () => {
       setOperation(symbol);
       setIscurrentFirst(false);
     }
-  }
+  };
 
   const onBasicOperation = () => {
     let res;
@@ -90,7 +90,8 @@ const App = () => {
     setSecondVal('');
     setOperation('');
     setIscurrentFirst(true);
-  } 
+  };
+
   const memoryOperation = symbol => {
     switch (symbol) {
       case 'mc': 
@@ -113,12 +114,11 @@ const App = () => {
         setMemoryValue(result - memoryValue);
         break;
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <TextInput textAlign='center' style={{textAlign: 'right', fontSize: 72, color: '#fff', paddingTop: '10%', paddingHorizontal: '6%'}} value={result ?? '0'}/>
-      <View style={{flexDirection: 'row'}}>
+      <TextInput style={styles.inputDisplay} value={result ?? '0'}/>
         
         <View style={styles.digitContainer}>
 
@@ -141,11 +141,10 @@ const App = () => {
 
         </View>
 
-      </View>
       <StatusBar style="auto" />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -158,6 +157,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center'
+  },
+  inputDisplay: {
+    textAlign: 'right',
+    fontSize: 72,
+    color: '#fff',
+    paddingTop: '10%',
+    paddingHorizontal: '6%'
   }
 });
 
