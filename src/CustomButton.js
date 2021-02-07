@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
+import { Text, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
 
-const TestBtn = (props) => {
+const CustomButton = (props) => {
 
   const composedButton = [
     styles.button,
@@ -20,20 +20,16 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     backgroundColor: '#333333',
-    padding: 10,
-    // width: 40,
     width: '20%',
     height: Dimensions.get('window').width / 5,
     margin: '2%',
-    // height: 40,
-    aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   zero: {
-    // width: 80,
+    paddingLeft: '8%',
     width: '44%',
-    aspectRatio: 1,
+    alignItems: 'flex-start',
   },
   orange: {
     backgroundColor: '#ff9812',
@@ -47,7 +43,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TestBtn;
+export default CustomButton;
 
 // #ff9812 orange
 // #333333 digit
