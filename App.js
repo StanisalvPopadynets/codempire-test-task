@@ -5,7 +5,7 @@ import { checkGray, checkOrange } from './src/util';
 
 import CustomButton from './src/CustomButton';
 
-const symbols = ['AC', '+/-', '%', '/', 'mc', 'mr', 'm-', 'm+', 7,8,9, 'x', 4,5,6, '-', 1,2,3, '+', 0, ',', '='];
+const symbols = ['AC', '+/-', '%', '÷', 'mc', 'mr', 'm-', 'm+', 7,8,9, 'x', 4,5,6, '-', 1,2,3, '+', 0, ',', '='];
 
 const App = () => {
 
@@ -52,11 +52,15 @@ const App = () => {
   const onDigitClick = digit => {
     if ((!firstVal || (firstVal && !operation && !secondVal))) {
       const valueToBeSet = (firstVal + String(digit));
+      if (valueToBeSet.length > 9)
+        return;
       setFirstVal(valueToBeSet);
       setResult(valueToBeSet);
       setIscurrentFirst(true);
     } else {
       const valueToBeSet = (secondVal + String(digit));
+      if (valueToBeSet.length > 9)
+        return;
       setSecondVal(valueToBeSet);
       setResult(valueToBeSet);
       setIscurrentFirst(false);
@@ -75,7 +79,7 @@ const App = () => {
   const onBasicOperation = () => {
     let res;
     switch (operation) {
-      case '/' : res = firstVal / secondVal;
+      case '÷' : res = firstVal / secondVal;
         break;
       case '+' : res = +firstVal + +secondVal;
         break;
@@ -85,7 +89,7 @@ const App = () => {
         break;
       default : res = firstVal;
     }
-    setFirstVal(res);
+    setFirstVal('');
     setResult(res);
     setSecondVal('');
     setOperation('');
