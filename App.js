@@ -122,7 +122,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.inputDisplay} value={result ?? '0'}/>
+      <TextInput style={styles.inputDisplay} editable={false} value={result ?? '0'}/>
         
         <View style={styles.digitContainer}>
 
